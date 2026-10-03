@@ -342,3 +342,13 @@
     transition:none!important;
   }
 }
+
+
+/* Keep second image slider identical across desktop and mobile */
+@media(max-width:640px){
+  .client-grid img{
+    object-fit:contain!important;
+    object-position:center center!important;
+    background:transparent!important;
+  }
+}
