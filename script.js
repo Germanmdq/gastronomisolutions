@@ -384,13 +384,55 @@
   const clientImgs = qa('#clientGrid img');
   if (clientScroll && clientImgs.length && !reduced) {
     if (mobile) {
-      gsap.fromTo(clientImgs,
-        { opacity: 0, y: 28 },
-        {
-          opacity: 1, y: 0, duration: 0.42, stagger: 0.05, ease: 'power2.out',
-          scrollTrigger: { trigger: clientScroll, start: 'top 72%', once: true }
+      const mobilePositions = [
+        ['7%','18%'], ['66%','14%'], ['12%','67%'],
+        ['61%','61%'], ['35%','8%'], ['36%','76%'],
+        ['4%','42%'], ['69%','39%'], ['20%','24%'],
+        ['54%','25%'], ['18%','56%'], ['63%','72%']
+      ];
+      clientImgs.forEach((img, i) => {
+        const [left, top] = mobilePositions[i % mobilePositions.length];
+        gsap.set(img, {
+          position: 'absolute',
+          left,
+          top,
+          x: 0,
+          y: 0,
+          z: 0,
+          opacity: 0,
+          scale: 0.82,
+          filter: 'none'
+        });
+      });
+      const mobileGroups = [[0,1,2],[3,4],[5,6,7],[8,9],[10,11]];
+      const mobileTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: clientScroll,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.45
         }
-      );
+      });
+      mobileGroups.forEach((group, gi) => {
+        const at = gi * 1.15;
+        group.forEach((idx, ii) => {
+          const img = clientImgs[idx];
+          if (!img) return;
+          mobileTl
+            .to(img, {
+              opacity: 0.92,
+              scale: 1,
+              duration: 0.34,
+              ease: 'power2.out'
+            }, at + ii * 0.08)
+            .to(img, {
+              opacity: 0,
+              scale: 1.06,
+              duration: 0.32,
+              ease: 'power2.in'
+            }, at + 0.78 + ii * 0.05);
+        });
+      });
     } else {
       const seeds = [
         [-150,-90,-2050], [120,-170,-1800], [-70,155,-2200], [175,70,-1650],
