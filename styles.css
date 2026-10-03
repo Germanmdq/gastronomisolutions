@@ -383,3 +383,11 @@
     bottom:-31%!important;
   }
 }
+
+
+/* Mobile hero chef vertical correction */
+@media(max-width:640px){
+  .hero-person{
+    bottom:-23%!important;
+  }
+}
