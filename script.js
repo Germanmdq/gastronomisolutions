@@ -4,16 +4,18 @@
   const reduced = false;
   const gsap = window.gsap;
   const ScrollTrigger = window.ScrollTrigger;
+  const mobile = window.matchMedia('(max-width: 1025px)').matches;
   if (!gsap || !ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  if (mobile) ScrollTrigger.config({ ignoreMobileResize: true });
 
   // Smooth scrolling: the original uses Lenis. Keep it disabled for reduced motion.
   let lenis = null;
-  if (!reduced && window.Lenis) {
+  if (!reduced && window.Lenis && !mobile) {
     lenis = new Lenis({ duration: 1.05, smoothWheel: true, wheelMultiplier: 0.95 });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.lagSmoothing(500, 33);
   }
 
   const q = (s, root = document) => root.querySelector(s);
@@ -115,16 +117,25 @@
       gsap.set(titleChars, { yPercent: 115 });
       gsap.set(heroMeta, { y: 24, opacity: 0 });
 
-      const reveal = { value: -40 };
-      gsap.timeline({ onComplete: () => { heroPanel?.classList.add('intro-done'); lenis?.start?.(); } })
-        .to(reveal, {
-          value: 125, duration: 3.5, ease: 'power2.out',
-          onUpdate: () => heroPerson?.style.setProperty('--reveal', reveal.value + '%')
-        }, 0)
-        .to(heroPerson, { opacity: 1, duration: 1.5, ease: 'power2.out' }, 0)
-        .to(titleChars, { yPercent: 0, duration: 0.6, stagger: 0.015, ease: 'power3.out' }, 1)
-        .to(heroMeta, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power2.out' }, 1.45)
-        .to(header, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 1.8);
+      if (mobile) {
+        heroPerson?.style.setProperty('--reveal', '125%');
+        gsap.timeline({ onComplete: () => heroPanel?.classList.add('intro-done') })
+          .to(heroPerson, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0)
+          .to(titleChars, { yPercent: 0, duration: 0.48, stagger: 0.008, ease: 'power3.out' }, 0.12)
+          .to(heroMeta, { y: 0, opacity: 1, duration: 0.45, stagger: 0.06, ease: 'power2.out' }, 0.3)
+          .to(header, { yPercent: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, 0.35);
+      } else {
+        const reveal = { value: -40 };
+        gsap.timeline({ onComplete: () => { heroPanel?.classList.add('intro-done'); lenis?.start?.(); } })
+          .to(reveal, {
+            value: 125, duration: 3.5, ease: 'power2.out',
+            onUpdate: () => heroPerson?.style.setProperty('--reveal', reveal.value + '%')
+          }, 0)
+          .to(heroPerson, { opacity: 1, duration: 1.5, ease: 'power2.out' }, 0)
+          .to(titleChars, { yPercent: 0, duration: 0.6, stagger: 0.015, ease: 'power3.out' }, 1)
+          .to(heroMeta, { y: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power2.out' }, 1.45)
+          .to(header, { yPercent: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, 1.8);
+      }
 
       setTimeout(restoreHero, 4500);
     } catch (err) {
@@ -136,12 +147,21 @@
 
   // Hero scroll choreography: shrink the opening panel while the portfolio marquee sharpens in.
   if (hero && heroPanel && gallery && !reduced) {
-    gsap.set(gallery, { opacity: 0.35, filter: 'blur(24px)' });
-    gsap.timeline({
-      scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
-    })
-      .to(heroPanel, { scale: innerWidth > 1025 ? 0.5 : 0.72, ease: 'power2.inOut', duration: 1 }, 0)
-      .to(gallery, { opacity: 1, filter: 'blur(0px)', ease: 'power2.out', duration: 0.18 }, 0.32);
+    if (mobile) {
+      gsap.set(gallery, { opacity: 0.35, filter: 'none' });
+      gsap.to(gallery, {
+        opacity: 1,
+        ease: 'none',
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.35 }
+      });
+    } else {
+      gsap.set(gallery, { opacity: 0.35, filter: 'blur(24px)' });
+      gsap.timeline({
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true }
+      })
+        .to(heroPanel, { scale: 0.5, ease: 'power2.inOut', duration: 1 }, 0)
+        .to(gallery, { opacity: 1, filter: 'blur(0px)', ease: 'power2.out', duration: 0.18 }, 0.32);
+    }
   }
 
   // Hero pointer parallax, desktop only.
@@ -180,7 +200,7 @@
         yPercent: innerWidth > 1024 ? -70 : -50,
         clipPath: 'ellipse(60% 100% at 50% 100%)',
         ease: 'none',
-        scrollTrigger: { trigger: portfolio, start: 'top bottom', end: '30% bottom', scrub: true }
+        scrollTrigger: { trigger: portfolio, start: 'top bottom', end: '30% bottom', scrub: mobile ? 0.35 : true }
       });
     }
 
@@ -203,8 +223,8 @@
     if (!reduced) {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: portfolio, start: '10% top', end: 'bottom bottom', scrub: true,
-          snap: { snapTo: 1 / 3, duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut' },
+          trigger: portfolio, start: '10% top', end: 'bottom bottom', scrub: mobile ? 0.35 : true,
+          snap: mobile ? false : { snapTo: 1 / 3, duration: { min: 0.2, max: 0.6 }, ease: 'power1.inOut' },
           onUpdate: (self) => setPortfolioActive(Math.min(3, Math.round(self.progress * 3)))
         }
       });
@@ -259,7 +279,10 @@
   const services = q('#services');
   const servicesRow = q('#servicesRow');
   const serviceCards = qa('.service-card');
+  let currentService = -1;
   const setServiceActive = (active) => {
+    if (active === currentService) return;
+    currentService = active;
     serviceCards.forEach((card, i) => {
       const isActive = i === active;
       card.classList.toggle('service-active', isActive);
@@ -285,7 +308,7 @@
         trigger: services,
         start: innerWidth > 1025 ? 'top 20%' : 'top top',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: mobile ? 0.35 : true,
         onUpdate: (self) => {
           if (innerWidth <= 1025) {
             setServiceActive(Math.min(serviceCards.length - 1, Math.round(self.progress * (serviceCards.length - 1))));
@@ -349,33 +372,38 @@
     if (awardsImageBox && innerWidth > 1025) gsap.to(awardsImageBox, { opacity: 0, duration: reduced ? 0 : 0.4, ease: 'power2.out' });
   });
 
-  // CLIENT LOGOS — fly in from depth, sharpen, then fly past camera and blur again.
+  // CLIENT LOGOS — lighter mobile reveal; full 3D choreography stays desktop-only.
   const clientScroll = q('#clientblur');
   const clientImgs = qa('#clientGrid img');
   if (clientScroll && clientImgs.length && !reduced) {
-    const desktop = innerWidth > 1024;
-    const seeds = [
-      [-150,-90,-2050], [120,-170,-1800], [-70,155,-2200], [175,70,-1650],
-      [-130,130,-1900], [80,-120,-2100], [145,165,-1750], [-175,-45,-2000],
-      [50,180,-1850], [-105,-150,-2150], [165,-110,-1700], [-40,85,-1950]
-    ];
-    const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: clientScroll, start: 'top 20%', end: 'bottom center', scrub: true } });
-    const inDur = desktop ? 1.5 : 1.55;
-    const outDur = desktop ? 1.5 : 1.35;
-    const groupGap = desktop ? inDur + 0.4 : 1.05;
-    const itemGap = desktop ? 0.4 : 0.22;
-    const groups = [[0,1,2],[3,4],[5,6,7],[8,9],[10,11]];
-    groups.forEach((group, gi) => {
-      group.forEach((idx, ii) => {
-        const img = clientImgs[idx];
-        if (!img) return;
-        const [x,y,z] = seeds[idx % seeds.length];
-        const start = gi * groupGap + ii * itemGap;
-        gsap.set(img, { opacity: 0, x: desktop ? x : 0, y, z: desktop ? z : z / 4, filter: 'blur(10px)', transformOrigin: '0% 0%' });
-        tl.to(img, { z: 0, opacity: 1, filter: 'blur(0px)', duration: inDur }, start)
-          .to(img, { z: desktop ? 1600 + idx * 16 : 550 + idx * 8, opacity: 0, filter: 'blur(10px)', duration: outDur }, start + inDur);
+    if (mobile) {
+      gsap.fromTo(clientImgs,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1, y: 0, duration: 0.42, stagger: 0.05, ease: 'power2.out',
+          scrollTrigger: { trigger: clientScroll, start: 'top 72%', once: true }
+        }
+      );
+    } else {
+      const seeds = [
+        [-150,-90,-2050], [120,-170,-1800], [-70,155,-2200], [175,70,-1650],
+        [-130,130,-1900], [80,-120,-2100], [145,165,-1750], [-175,-45,-2000],
+        [50,180,-1850], [-105,-150,-2150], [165,-110,-1700], [-40,85,-1950]
+      ];
+      const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: clientScroll, start: 'top 20%', end: 'bottom center', scrub: true } });
+      const groups = [[0,1,2],[3,4],[5,6,7],[8,9],[10,11]];
+      groups.forEach((group, gi) => {
+        group.forEach((idx, ii) => {
+          const img = clientImgs[idx];
+          if (!img) return;
+          const [x,y,z] = seeds[idx % seeds.length];
+          const start = gi * 1.9 + ii * 0.4;
+          gsap.set(img, { opacity: 0, x, y, z, filter: 'blur(10px)', transformOrigin: '0% 0%' });
+          tl.to(img, { z: 0, opacity: 1, filter: 'blur(0px)', duration: 1.5 }, start)
+            .to(img, { z: 1600 + idx * 16, opacity: 0, filter: 'blur(10px)', duration: 1.5 }, start + 1.5);
+        });
       });
-    });
+    }
   } else if (reduced) {
     gsap.set(clientImgs, { opacity: 1, x: 0, y: 0, z: 0, filter: 'blur(0px)' });
   }
@@ -420,10 +448,17 @@
   const footer = q('#footer');
   const footerGlass = q('.footer-glass');
   if (footer && footerGlass && !reduced) {
-    gsap.fromTo(footerGlass, { yPercent: innerWidth > 1025 ? 20 : 10, opacity: innerWidth > 1025 ? 1 : 0.25 }, {
-      yPercent: 0, opacity: 1, ease: 'power1.out',
-      scrollTrigger: { trigger: footer, start: innerWidth > 1025 ? 'top 60%' : 'top 88%', end: 'bottom bottom', scrub: true }
-    });
+    if (mobile) {
+      gsap.fromTo(footerGlass, { y: 28, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.55, ease: 'power2.out',
+        scrollTrigger: { trigger: footer, start: 'top 90%', once: true }
+      });
+    } else {
+      gsap.fromTo(footerGlass, { yPercent: 20, opacity: 1 }, {
+        yPercent: 0, opacity: 1, ease: 'power1.out',
+        scrollTrigger: { trigger: footer, start: 'top 60%', end: 'bottom bottom', scrub: true }
+      });
+    }
   }
 
   // Interactive pills: expanding dot + character lift, matching the source micro-interaction.
