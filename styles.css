@@ -262,3 +262,38 @@
   .marquee-1{animation-duration:18s!important}
   .marquee-2{animation-duration:24s!important}
 }
+
+
+/* Mobile hero composition correction */
+@media(max-width:640px){
+  .hero{
+    padding:0 5vw!important;
+  }
+  .hero-copy{
+    padding-top:12.5vh!important;
+    justify-content:flex-start!important;
+    gap:3.2vw!important;
+  }
+  .hero h1{
+    width:94%!important;
+    font-size:11.55vw!important;
+    line-height:.99!important;
+    position:relative!important;
+    z-index:6!important;
+    margin-bottom:1.5vw!important;
+  }
+  .hero-meta{
+    margin-top:0!important;
+    position:relative!important;
+    z-index:6!important;
+  }
+  .hero-person{
+    width:126%!important;
+    left:63%!important;
+    bottom:-23%!important;
+    z-index:2!important;
+  }
+  .hero-person img{
+    object-position:center bottom!important;
+  }
+}
