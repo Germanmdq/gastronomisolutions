@@ -391,3 +391,126 @@
     bottom:-23%!important;
   }
 }
+
+
+/* Mobile portfolio redesign: one active state + image, no dead vertical space */
+@media(max-width:640px){
+  .portfolio-scroll{
+    height:300vh!important;
+  }
+  .portfolio-sticky{
+    padding:18vw 5vw 5vw!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .portfolio-sticky h2{
+    font-size:9.2vw!important;
+    line-height:1.02!important;
+    margin:0 auto 8vw!important;
+    max-width:90%!important;
+  }
+  .portfolio-layout{
+    display:block!important;
+    width:100%!important;
+  }
+  .timeline{
+    width:100%!important;
+    height:22vw!important;
+    padding:0!important;
+    position:relative!important;
+    margin-bottom:5vw!important;
+  }
+  .timeline .line{
+    display:none!important;
+  }
+  .timeline article{
+    position:absolute!important;
+    inset:0!important;
+    height:22vw!important;
+    width:100%!important;
+    display:flex!important;
+    align-items:flex-start!important;
+    gap:3vw!important;
+    opacity:0!important;
+    transform:none!important;
+    pointer-events:none!important;
+  }
+  .timeline article.active{
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+  .timeline article>span{
+    flex:0 0 auto!important;
+    width:3.2vw!important;
+    height:3.2vw!important;
+    margin-top:1.2vw!important;
+    border-width:1px!important;
+  }
+  .timeline article>div{
+    opacity:1!important;
+    transform:none!important;
+    max-width:none!important;
+  }
+  .timeline h3{
+    font-size:6.2vw!important;
+    line-height:1.05!important;
+    margin:0 0 1.4vw!important;
+  }
+  .timeline p{
+    font-size:3.7vw!important;
+    line-height:1.25!important;
+    margin:0!important;
+  }
+  .portfolio-stage{
+    width:100%!important;
+    height:69vw!important;
+    margin:0!important;
+    border-radius:4vw!important;
+    overflow:hidden!important;
+  }
+  .portfolio-stage .portfolio-layer{
+    border-radius:4vw!important;
+  }
+
+  /* Clean vector icons; avoid iOS emoji rendering */
+  .work-card .icon{
+    width:11vw!important;
+    height:11vw!important;
+    display:grid!important;
+    place-items:center!important;
+    color:#f16b0d!important;
+    font-size:0!important;
+  }
+  .work-card .icon svg{
+    width:100%!important;
+    height:100%!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.6!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  .service-card .arrow svg{
+    width:48%!important;
+    height:48%!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.8!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+  .floating-wa b{
+    display:grid!important;
+    place-items:center!important;
+    font-size:0!important;
+  }
+  .floating-wa b svg{
+    width:48%!important;
+    height:48%!important;
+    fill:none!important;
+    stroke:currentColor!important;
+    stroke-width:1.8!important;
+    stroke-linecap:round!important;
+    stroke-linejoin:round!important;
+  }
+}
