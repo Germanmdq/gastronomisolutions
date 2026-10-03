@@ -352,3 +352,34 @@
     background:transparent!important;
   }
 }
+
+
+/* Permanent cleanup: old second-slider photos removed */
+.client-text-only{
+  height:120vh!important;
+}
+.client-text-only .client-title{
+  height:100vh!important;
+}
+.client-text-only .client-title h3{
+  position:relative!important;
+  z-index:2!important;
+}
+
+/* Mobile hero: preserve animation, only correct composition */
+@media(max-width:640px){
+  .hero-copy{
+    padding-top:8.5vh!important;
+  }
+  .hero h1{
+    width:92%!important;
+    font-size:11.1vw!important;
+    line-height:.98!important;
+    margin-bottom:1vw!important;
+  }
+  .hero-person{
+    width:114%!important;
+    left:64%!important;
+    bottom:-31%!important;
+  }
+}
