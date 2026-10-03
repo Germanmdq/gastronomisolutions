@@ -383,11 +383,11 @@
 
   // TESTIMONIALS — animated copy swap rather than abrupt replacement.
   const quotes = [
-    ['Rentabilidad','Costos · Merma · Margen','https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1600&q=88','Una carta bien diseñada tiene que poder producirse, sostener calidad y dejar margen.'],
-    ['Consistencia','Recetas · Estándares · Control','https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=88','El objetivo es que cada plato salga con el mismo criterio, sin depender de una sola persona.'],
-    ['Velocidad','Mise en place · Flujo · Despacho','https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=1600&q=88','Ordenar el flujo reduce esperas, retrabajo y conversaciones innecesarias durante el servicio.'],
-    ['Equipo','Roles · Capacitación · Autonomía','https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=88','Los procedimientos claros convierten conocimiento individual en una forma de trabajo compartida.'],
-    ['Control','Indicadores · Seguimiento · Mejora','https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1600&q=88','Medir puntos críticos permite corregir antes de que el problema llegue al cliente.']
+    ['Rentabilidad','Costos · Merma · Margen','https://unsplash.com/photos/RZyAgi8MTZQ/download?force=true&w=1600','Una carta bien diseñada tiene que poder producirse, sostener calidad y dejar margen.'],
+    ['Consistencia','Recetas · Estándares · Control','https://unsplash.com/photos/bXOHW6fKdPI/download?force=true&w=1600','El objetivo es que cada plato salga con el mismo criterio, sin depender de una sola persona.'],
+    ['Velocidad','Mise en place · Flujo · Despacho','https://unsplash.com/photos/YFK5dBI6Ftc/download?force=true&w=1600','Ordenar el flujo reduce esperas, retrabajo y conversaciones innecesarias durante el servicio.'],
+    ['Equipo','Roles · Capacitación · Autonomía','https://unsplash.com/photos/Oyqf9CB783s/download?force=true&w=1600','Los procedimientos claros convierten conocimiento individual en una forma de trabajo compartida.'],
+    ['Control','Indicadores · Seguimiento · Mejora','https://unsplash.com/photos/bXOHW6fKdPI/download?force=true&w=1600','Medir puntos críticos permite corregir antes de que el problema llegue al cliente.']
   ];
   const buttons = qa('.avatar-row button');
   const quoteCard = q('.testimonial-card');
