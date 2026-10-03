@@ -297,3 +297,48 @@
     object-position:center bottom!important;
   }
 }
+
+
+/* Mobile client collage correction */
+@media(max-width:640px){
+  .client-scroll{
+    height:285vh!important;
+    position:relative!important;
+  }
+  .client-title{
+    z-index:5!important;
+    position:sticky!important;
+    top:0!important;
+    height:100vh!important;
+    padding:0 6vw!important;
+    pointer-events:none!important;
+  }
+  .client-title h3{
+    width:88%!important;
+    max-width:88%!important;
+    font-size:8.3vw!important;
+    line-height:1.04!important;
+    position:relative!important;
+    z-index:5!important;
+  }
+  .client-grid{
+    position:sticky!important;
+    top:0!important;
+    margin-top:-100vh!important;
+    width:100%!important;
+    height:100vh!important;
+    display:block!important;
+    z-index:3!important;
+    overflow:hidden!important;
+    perspective:none!important;
+  }
+  .client-grid img{
+    width:29vw!important;
+    height:18vw!important;
+    object-fit:cover!important;
+    opacity:0;
+    border-radius:1.2vw;
+    box-shadow:0 1.5vw 4vw rgba(0,0,0,.22);
+    transition:none!important;
+  }
+}
