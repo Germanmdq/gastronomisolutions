@@ -118,12 +118,19 @@
       gsap.set(heroMeta, { y: 24, opacity: 0 });
 
       if (mobile) {
-        heroPerson?.style.setProperty('--reveal', '125%');
+        const mobileReveal = { value: -28 };
+        heroPerson?.style.setProperty('--reveal', '-28%');
         gsap.timeline({ onComplete: () => heroPanel?.classList.add('intro-done') })
-          .to(heroPerson, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out' }, 0)
-          .to(titleChars, { yPercent: 0, duration: 0.48, stagger: 0.008, ease: 'power3.out' }, 0.12)
-          .to(heroMeta, { y: 0, opacity: 1, duration: 0.45, stagger: 0.06, ease: 'power2.out' }, 0.3)
-          .to(header, { yPercent: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, 0.35);
+          .to(mobileReveal, {
+            value: 125,
+            duration: 1.25,
+            ease: 'power2.out',
+            onUpdate: () => heroPerson?.style.setProperty('--reveal', mobileReveal.value + '%')
+          }, 0)
+          .to(heroPerson, { opacity: 1, y: 0, duration: 0.75, ease: 'power2.out' }, 0)
+          .to(titleChars, { yPercent: 0, duration: 0.5, stagger: 0.008, ease: 'power3.out' }, 0.18)
+          .to(heroMeta, { y: 0, opacity: 1, duration: 0.45, stagger: 0.06, ease: 'power2.out' }, 0.38)
+          .to(header, { yPercent: 0, opacity: 1, duration: 0.45, ease: 'power3.out' }, 0.34);
       } else {
         const reveal = { value: -40 };
         gsap.timeline({ onComplete: () => { heroPanel?.classList.add('intro-done'); lenis?.start?.(); } })
@@ -148,12 +155,12 @@
   // Hero scroll choreography: shrink the opening panel while the portfolio marquee sharpens in.
   if (hero && heroPanel && gallery && !reduced) {
     if (mobile) {
-      gsap.set(gallery, { opacity: 0.35, filter: 'none' });
-      gsap.to(gallery, {
-        opacity: 1,
-        ease: 'none',
-        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.35 }
-      });
+      gsap.set(gallery, { opacity: 0.28, filter: 'none' });
+      gsap.timeline({
+        scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.45 }
+      })
+        .to(heroPanel, { scale: 0.78, yPercent: -2, ease: 'none', duration: 1 }, 0)
+        .to(gallery, { opacity: 1, ease: 'none', duration: 0.65 }, 0.18);
     } else {
       gsap.set(gallery, { opacity: 0.35, filter: 'blur(24px)' });
       gsap.timeline({
