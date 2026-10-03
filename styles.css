@@ -222,3 +222,43 @@
   .socials a{width:12vw;height:12vw}
   .socials img{width:4.2vw!important;height:4.2vw!important}
 }
+
+
+/* Mobile stability pass — native scroll, fewer compositing layers */
+@media(max-width:1025px){
+  html{scroll-behavior:auto!important}
+  body{overscroll-behavior-y:auto}
+  .topbar,.pill,.footer-glass{
+    -webkit-backdrop-filter:none!important;
+    backdrop-filter:none!important;
+  }
+  .topbar{background:linear-gradient(180deg,rgba(0,0,0,.22),transparent)}
+  .pill{background:rgba(0,0,0,.22)}
+  .footer-glass{background:rgba(0,0,0,.16)}
+  .hero,.gallery-overlay,.services-row,.client-grid img,.portfolio-layer,.footer-glass,.service-card{
+    will-change:auto!important;
+  }
+  .gallery-overlay,.marquee-col img,.portfolio-stage .portfolio-layer{
+    filter:none!important;
+  }
+  .client-grid{
+    perspective:none!important;
+    transform-style:flat!important;
+  }
+  .client-grid img{
+    transform-style:flat!important;
+    backface-visibility:visible!important;
+  }
+  .service-card{
+    -webkit-mask-image:none!important;
+    mask-image:none!important;
+  }
+  .service-card:before{
+    -webkit-mask-image:none!important;
+    mask-image:none!important;
+    opacity:.22!important;
+  }
+  .service-card.service-active:before{opacity:.62!important}
+  .marquee-1{animation-duration:18s!important}
+  .marquee-2{animation-duration:24s!important}
+}
